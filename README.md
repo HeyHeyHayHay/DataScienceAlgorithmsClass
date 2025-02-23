@@ -5,7 +5,7 @@ This repository contains implementations of various data science algorithms base
 ### Current Implementation: K-Means Clustering
 As of now, this repository includes the **K-Means Clustering** algorithm.
 
-![alt text](https://raw.githubusercontent.com/HeyHeyHayHay/DataScienceAlgorithmsClass/main/images/imageColorClusteringExample.png)
+![alt text](https://raw.githubusercontent.com/HeyHeyHayHay/DataScienceAlgorithmsClass/main/images/imageColorClusteringExamples.png)
 
 
 
