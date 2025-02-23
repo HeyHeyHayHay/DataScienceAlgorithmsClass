@@ -6,7 +6,7 @@ import numpy as np
 
 # data
 
-numberOfDataPoints = 40
+numberOfDataPoints = 1000
 dimension = 2
 
 randomData = {}
@@ -27,7 +27,6 @@ coordinatesOfColleges = {
     "WMU": np.array([42.28435667550862, -85.6108496736789])  # Western Michigan University
 }
 
-print(coordinatesOfColleges)
 # functions
 
 def closestMeanIndex(means, point):
@@ -50,18 +49,23 @@ def findClusters(means, data):
 
     clusters = [{} for i in range(len(means))]
 
+    closestClusterIndices = []
+
     for id, point in data.items():
         closestClusterIndex = closestMeanIndex(means, point)
         clusters[closestClusterIndex].update({id: point})
+        closestClusterIndices.append(closestClusterIndex)
 
     return clusters
 
 def findCenterOfMass(cluster):
     numberOfDataPoints = len(cluster)
     clusterPoints = list(cluster.values())
-    centerOfMass = clusterPoints[0]
+    centerOfMass = clusterPoints[0].astype(np.float64)
     for point in clusterPoints[1:]:
-        centerOfMass = centerOfMass + point
+        centerOfMass = centerOfMass + point.astype(np.float64)
+
+    #print("numberOfDataPoints: ", numberOfDataPoints, "centerOfMass: ", centerOfMass, "cluster: ", cluster)
 
     centerOfMass = centerOfMass / numberOfDataPoints
 
@@ -92,7 +96,6 @@ def indicatorFunction(previousClusters, newClusters):
 def initializeMeans(K, data):
     #randomize iniital points as means
     means = random.sample(list(data.values()), K)
-
     return means
 
 def twoDPlotCluster(cluster, idPoints = False, show = False, s=None, c=None, marker=None, cmap=None, norm=None, vmin=None, vmax=None, alpha=None, linewidths=None, edgecolors=None, colorizer=None, plotnonfinite=False, data=None, **kwargs):
@@ -150,7 +153,6 @@ def kMeans(K, data, plot = False, idPoints = False):
     while ( (step < 10) or (previousIndicator > newIndicator) and (step < 1000)) and (newIndicator != 0):
 
         # update center of mass
-
         newMeans = updateAllCentersOfMass(previousClusters)
 
         # update clusters
@@ -180,7 +182,3 @@ def kMeans(K, data, plot = False, idPoints = False):
     means = newMeans
 
     return newClusters
-
-# testing
-
-kMeans(3, coordinatesOfColleges, plot = True, idPoints = True)
