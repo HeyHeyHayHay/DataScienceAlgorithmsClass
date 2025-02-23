@@ -5,8 +5,8 @@ This repository contains implementations of various data science algorithms base
 ### Current Implementation: K-Means Clustering
 As of now, this repository includes the **K-Means Clustering** algorithm.
 
+I developed a K-Means clustering algorithm to simplify an image by reducing it to a set of k dominant colors. Below are some examples:
 ![alt text](https://github.com/HeyHeyHayHay/DataScienceAlgorithmsClass/blob/main/kMeans/images/imageColorClusteringExamples.png?raw=true)
-![alt text](https://raw.githubusercontent.com/HeyHeyHayHay/DataScienceAlgorithmsClass/main/kMeans/images/imageColorClusteringExamples.png)
 
 ### Course Overview
 The course consists of 26 lectures covering a wide range of topics in data science algorithms. Below is an outline of the major topics:
