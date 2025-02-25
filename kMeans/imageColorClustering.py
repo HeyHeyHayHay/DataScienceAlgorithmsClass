@@ -32,7 +32,7 @@ def clustersToImage(clusters, imageArray):
 
     return Image.fromarray(newImageArray)
 
-def clusterImageColors(numberOfColors, imagePath):
+def clusterImageColors(numberOfColors, imagePath, plot = False, idPoints = False):
 
     image = Image.open(imagePath).convert("RGB")
     imageArray = np.array(image)
@@ -40,7 +40,7 @@ def clusterImageColors(numberOfColors, imagePath):
     height, width, _ = imageArray.shape
 
     imagePixelData = imageToDict(imageArray)
-    clusters = kMeans(numberOfColors, imagePixelData)
+    clusters = kMeans(numberOfColors, imagePixelData, plot, idPoints)
 
     newImage = clustersToImage(clusters, imageArray)
 
@@ -48,4 +48,4 @@ def clusterImageColors(numberOfColors, imagePath):
 
     return newImage
 
-reducedColorImage = clusterImageColors(4, "Komposition-in-Rot-Blau.jpg")
+reducedColorImage = clusterImageColors(4, "images/Paul_Cézanne,_Still_Life_1890.jpg", plot = True)

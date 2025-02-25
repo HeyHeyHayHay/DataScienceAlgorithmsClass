@@ -131,6 +131,21 @@ def twoDPlotAllClusters(clusters, idPoints = False, show = False, s=None, marker
 
     return
 
+def multiToTwoDCluster(cluster):
+    twoDCluster = {}
+
+    lengthOfVector = len(next(iter(cluster.values())))
+    weight = np.random.rand(lengthOfVector)
+
+    for key, value in cluster.items():
+        lengthOfVector = len(value)
+        half = lengthOfVector // 2
+        weightedValue = np.multiply(weight, value)
+        x = np.mean(weightedValue[:half])
+        y = np.var(weightedValue[half:])
+        twoDCluster[key] = np.array([x, y])
+    return twoDCluster
+
 # algorithm
 
 def kMeans(K, data, plot = False, idPoints = False):
@@ -144,6 +159,8 @@ def kMeans(K, data, plot = False, idPoints = False):
     previousMeans = initializeMeans(K, data)
 
     previousClusters = findClusters(previousMeans, data)
+
+    dimensionOfPoints = len(next(iter(previousClusters[0].values())))
 
     newIndicator = math.inf
     previousIndicator = math.inf
@@ -173,11 +190,21 @@ def kMeans(K, data, plot = False, idPoints = False):
         print("Indication Value: ", newIndicator)
 
         if plot:
+            plotClusters = []
+            if dimensionOfPoints != 2:
+                for cluster in newClusters:
+                    plotCluster = multiToTwoDCluster(cluster)
+                    plotClusters.append(plotCluster)
+            else:
+                for cluster in newClusters:
+                    plotCluster = cluster
+                    plotClusters.append(plotCluster)
+
             plt.figure(step)
             if idPoints:
-                twoDPlotAllClusters(newClusters, show = True, idPoints = True)
+                twoDPlotAllClusters(plotClusters, show = True, idPoints = True)
             else:
-                twoDPlotAllClusters(newClusters, show = True)
+                twoDPlotAllClusters(plotClusters, show = True)
 
     means = newMeans
 
