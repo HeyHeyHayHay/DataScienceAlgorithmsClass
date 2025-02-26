@@ -10,7 +10,7 @@ for index, row in zooDataFrame.iterrows():
     array = zooDataFrame.iloc[index, 1:].to_numpy()
     zooDict.update({row['animal_name']: array})
 
-classTaxon = kMeansClustering.kMeans(7, zooDict, plot = True, idPoints = True)
+classTaxon = kMeansClustering.kMeans(12, zooDict, plotFinal = True, idPoints = True)
 
 # testing
 for cluster in classTaxon:

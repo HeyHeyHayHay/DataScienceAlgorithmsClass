@@ -121,6 +121,8 @@ def twoDPlotAllClusters(clusters, idPoints = False, show = False, s=None, marker
 
     numberOfClusters = len(clusters)
     colors = plt.cm.tab10(np.linspace(0, 1, numberOfClusters))
+    #colors = plt.cm.Set2(np.linspace(0, 1, numberOfClusters)) #pastel
+    #colors = plt.cm.viridis(np.linspace(0, 1, numberOfClusters)) # options: viridis, plasma, coolwarm
 
     for i in range(numberOfClusters):
         twoDPlotCluster(clusters[i], idPoints, s=s, color=colors[i], marker=marker, cmap=cmap, norm=norm, vmin=vmin, vmax=vmax, alpha=alpha, linewidths=linewidths, edgecolors=edgecolors, colorizer=colorizer, plotnonfinite=plotnonfinite, data=data, label=f'C {i+1}', **kwargs)
@@ -146,9 +148,30 @@ def multiToTwoDCluster(cluster):
         twoDCluster[key] = np.array([x, y])
     return twoDCluster
 
+def plotClusters(clusters, figureName = 1, idPoints = False, show = False, s=None, marker=None, cmap=None, norm=None, vmin=None, vmax=None, alpha=None, linewidths=None, edgecolors=None, colorizer=None, plotnonfinite=False, data=None, **kwargs):
+    plotClusters = []
+
+    dimensionOfPoints = len(next(iter(clusters[0].values())))
+
+    if dimensionOfPoints != 2:
+        for cluster in clusters:
+            plotCluster = multiToTwoDCluster(cluster)
+            plotClusters.append(plotCluster)
+    else:
+        for cluster in clusters:
+            plotCluster = cluster
+            plotClusters.append(plotCluster)
+
+    plt.figure(figureName)
+    if idPoints:
+        twoDPlotAllClusters(plotClusters, show = True, idPoints = True)
+    else:
+        twoDPlotAllClusters(plotClusters, show = True)
+    pass
+
 # algorithm
 
-def kMeans(K, data, plot = False, idPoints = False):
+def kMeans(K, data, plot = False , plotFinal = False, idPoints = False):
 
     if (K >= len(data)):
         raise ValueError("Too many clusters")
@@ -190,22 +213,10 @@ def kMeans(K, data, plot = False, idPoints = False):
         print("Indication Value: ", newIndicator)
 
         if plot:
-            plotClusters = []
-            if dimensionOfPoints != 2:
-                for cluster in newClusters:
-                    plotCluster = multiToTwoDCluster(cluster)
-                    plotClusters.append(plotCluster)
-            else:
-                for cluster in newClusters:
-                    plotCluster = cluster
-                    plotClusters.append(plotCluster)
-
-            plt.figure(step)
-            if idPoints:
-                twoDPlotAllClusters(plotClusters, show = True, idPoints = True)
-            else:
-                twoDPlotAllClusters(plotClusters, show = True)
+            plotClusters(newClusters, figureName = step, idPoints = idPoints, show = True)
 
     means = newMeans
+    if plotFinal:
+        plotClusters(newClusters, figureName = "Final", idPoints = idPoints, show = True)
 
     return newClusters
