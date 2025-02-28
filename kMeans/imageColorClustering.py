@@ -1,6 +1,8 @@
 from kMeansClustering import kMeans
 from kMeansClustering import findCenterOfMass
 
+from silhouetteMethod import silhouetteKMeans
+
 import math
 import random
 import numpy as np
@@ -48,4 +50,21 @@ def clusterImageColors(numberOfColors, imagePath, plot = False, plotFinal = True
 
     return newImage
 
-reducedColorImage = clusterImageColors(12, "images/Paul_Cézanne,_Still_Life_1890.jpg", plot = False, plotFinal = True)
+def clusterImageColorsSilhouette(imagePath, plot = False, plotFinal = True, idPoints = False):
+
+    image = Image.open(imagePath).convert("RGB")
+    imageArray = np.array(image)
+
+    height, width, _ = imageArray.shape
+
+    imagePixelData = imageToDict(imageArray)
+    clusters = silhouetteKMeans(imagePixelData, plot, plotFinal, idPoints)
+
+    newImage = clustersToImage(clusters, imageArray)
+
+    newImage.show()
+
+    pass
+
+#reducedColorImage = clusterImageColors(12, "images/Paul_Cézanne,_Still_Life_1890.jpg", plot = False, plotFinal = True)
+reducedColorImage = clusterImageColorsSilhouette("images/Paul_Cézanne,_Still_Life_1890.jpg", plot = False, plotFinal = True)

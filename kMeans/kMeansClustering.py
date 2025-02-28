@@ -209,8 +209,8 @@ def kMeans(K, data, plot = False , plotFinal = False, idPoints = False):
         previousMeans = newMeans
 
         step = step + 1
-        print("Step:", step)
-        print("Indication Value: ", newIndicator)
+        #print("Step:", step)
+        #print("Indication Value: ", newIndicator)
 
         if plot:
             plotClusters(newClusters, figureName = step, idPoints = idPoints, show = True)
