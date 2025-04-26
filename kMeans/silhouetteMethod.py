@@ -134,7 +134,7 @@ def silhouetteKMeans(data, showFinal = False, plotSgraph = False, idPoints = Fal
     return bestClusters
 
 #testing
-"""
+
 numberOfDataPoints = 100
 dimension = 2
 
@@ -157,4 +157,3 @@ for i in range(numberOfDataPoints//3):
     randomData.update({f"{i}": value})
 
 silhouetteKMeans(randomData, showFinal = True, plotSgraph = True)
-"""

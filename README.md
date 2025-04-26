@@ -2,12 +2,21 @@
 
 This repository contains implementations of various data science algorithms based on a course that introduces both the theoretical foundations and practical applications of key concepts in the field. The course provides an in-depth exploration of different algorithms in data science, with a focus on clustering, regression, dimension reduction, and manifold learning.
 
-### Current Implementation: K-Means Clustering
-As of now, this repository includes the **K-Means Clustering** algorithm.
+## Current Implementations:
 
-I developed a K-Means clustering algorithm to simplify an image by reducing it to a set of k dominant colors. Below are some examples:
+This repository currently includes implementations of the **K-Means Clustering** algorithm and the **Kernel Density Estimation** (KDE) algorithm.
+
+###K-Means Clustering
+
+I wrote a K-Means clustering algorithm in Python to simplify an image by reducing it to a set of k dominant colors. Below are some examples:
 
 ![alt text](https://github.com/HeyHeyHayHay/DataScienceAlgorithmsClass/blob/main/kMeans/images/imageColorClusteringExamples.png?raw=true)
+
+###Kernel Density Estimation
+
+I implementated a **Kernel Density Estimation** (KDE) algorithm for various kernels in OpenGL Shading Language on ShaderToy. Using KDE, I created a generative artwork:
+
+![alt text](https://github.com/HeyHeyHayHay/DataScienceAlgorithmsClass/blob/main/KernelDensityEstimation/images/ShaderArtUsingKDE.png?raw=true)
 
 ### Course Overview
 The course consists of 26 lectures covering a wide range of topics in data science algorithms. Below is an outline of the major topics:

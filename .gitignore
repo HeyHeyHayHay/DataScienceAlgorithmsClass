@@ -1,0 +1,11 @@
+kMeans/__pycache__/
+
+kMeans/images/
+!kMeans/images/imageColorClusteringExample.png
+
+kMeans/datasets/
+
+
+KernelDensityEstimation/images/
+!KernelDensityEstimation/images/RedBlueKDEShader.png
+!KernelDensityEstimation/images/ShaderArtUsingKDE.png
