@@ -20,6 +20,8 @@ I implemented a **Kernel Density Estimation** (KDE) algorithm for various kernel
 
 ![alt text](https://github.com/HeyHeyHayHay/DataScienceAlgorithmsClass/blob/main/KernelDensityEstimation/images/ShaderArtUsingKDE.png?raw=true)
 
+Check out the [Kernel Density Estimation shader on ShaderToy](https://www.shadertoy.com/view/33fSWr).
+
 ### Course Overview
 The course consists of 26 lectures covering a wide range of topics in data science algorithms. Below is an outline of the major topics:
 

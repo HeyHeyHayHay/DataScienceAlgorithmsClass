@@ -1,0 +1,215 @@
+
+
+// Estimate underlying density function from sample data
+// Idea: Place mini distribution at each point and add those up
+// Kernel function must have integral equal to one and taper off "quickly"
+
+// Choose Kernel Function
+
+#define gaussian
+//#define uniform
+//#define epanechnikov
+//#define logistic
+//#define triangular
+
+#define PI     3.14159265
+
+float rand(vec2 coordinate, float t){
+    return fract(sin(t + dot(coordinate, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+float dcircle(vec2 uv, vec2 center, float radius){
+    return length(uv-center) - radius;
+}
+
+// Drawing Functions
+vec3 drawIsoLine(float d, float height, float thickness, vec3 lineColor, vec3 currentColor){
+
+    d -= height;
+
+    float i = smoothstep(thickness, 0.0, abs(d));
+
+    vec3 color = mix(currentColor, lineColor, i);
+    return color;
+}
+
+vec3 drawFill(float d, float thickness, vec3 fillColor, vec3 currentColor){
+
+    float i = smoothstep(thickness, 0.0, d);
+    vec3 color = mix(currentColor, fillColor, i);
+    return color;
+}
+
+// Normalize coordinates
+vec2 toUV(vec2 xy){
+    vec2 uv = xy/iResolution.xy;
+    uv = -1.0 + 2.0*uv;
+    uv.x = uv.x * (iResolution.x / iResolution.y);
+    return uv;
+}
+
+
+// Kernel Density Estimation
+
+float gaussianKernel(vec2 uv, vec2 dataPoint, float bandwidth){
+    float distanceInput = length(uv - dataPoint) / bandwidth;
+    return (1.0/sqrt(2.0*PI))*exp(-distanceInput*distanceInput / 2.0) ;
+}
+
+float uniformKernel(vec2 uv, vec2 dataPoint, float bandwidth){
+    float distanceInput = length(uv - dataPoint) / bandwidth;
+
+    if (distanceInput < 1.0){
+        return 1.0/2.0;
+    }
+    if (distanceInput >= 1.0){
+        return 0.0;
+    }
+
+}
+
+float triangularKernel(vec2 uv, vec2 dataPoint, float bandwidth){
+    float distanceInput = length(uv - dataPoint) / bandwidth;
+
+    if (distanceInput < 1.0){
+        return 1.0 - distanceInput;
+    }
+    if (distanceInput >= 1.0){
+        return 0.0;
+    }
+
+}
+
+float epanechnikovKernel(vec2 uv, vec2 dataPoint, float bandwidth){
+    float distanceInput = length(uv - dataPoint) / bandwidth;
+
+    if (distanceInput < 1.0){
+        return (3.0/4.0)*(1.0-distanceInput*distanceInput);
+    }
+    if (distanceInput >= 1.0){
+        return 0.0;
+    }
+
+}
+
+float logisticKernel(vec2 uv, vec2 dataPoint, float bandwidth){
+    float distanceInput = length(uv - dataPoint) / bandwidth;
+    return (1.0/ (exp(distanceInput) + 2.0 + exp(-distanceInput)) );
+}
+
+float kde(vec2 uv, vec2 points[10], int pointCount, float bandwidth){
+
+    float kde = 0.0;
+
+    for (int i = 0; i < pointCount; i++){
+
+        #ifdef gaussian
+            kde += gaussianKernel(uv, points[i], bandwidth);
+        #endif
+        #ifdef uniform
+            kde += uniformKernel(uv, points[i], bandwidth);
+        #endif
+        #ifdef epanechnikov
+            kde += epanechnikovKernel(uv, points[i], bandwidth);
+        #endif
+        #ifdef logistic
+            kde += logisticKernel(uv, points[i], bandwidth);
+        #endif
+        #ifdef triangular
+            kde += triangularKernel(uv, points[i], bandwidth);
+        #endif
+
+    }
+
+    return kde/(float(pointCount)*bandwidth*bandwidth);
+}
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+    // Normalized pixel coordinates
+    vec2 uv = toUV(fragCoord);
+
+    // InitializePoints
+    const int maxPoints = 10;
+
+
+    vec3 blueColor= vec3(0.2, 0.5, 0.8);
+
+    vec2 bluePoints[maxPoints] = vec2[](
+        vec2( 0.2, 0.21),
+        vec2(-0.2, 0.041),
+        vec2( -0.12, 0.52),
+        vec2( -0.7, -0.11),
+        vec2( 0.24+sin(iTime),-0.45),
+        vec2( -0.6, 0.49),
+        vec2( 0.41, -0.2),
+        vec2( 0.28, 0.7),
+        vec2( 0.2, 0.1),
+        vec2( 0.67, 0.14)
+
+    );
+
+    vec3 redColor= vec3(0.8, 0.4, 0.4);
+
+    vec2 redPoints[maxPoints] = vec2[](
+        vec2( 0.15, 0.11),
+        vec2(-0.2, -0.02),
+        vec2( -0.12, -0.72),
+        vec2( -1.1, -0.21),
+        vec2( 0.64,-0.01),
+        vec2( -0.62, -0.29),
+        vec2( 0.81, -0.1),
+        vec2( 0.527, 0.5),
+        vec2( -0.62, 0.14),
+        vec2( -0.07, -0.14)
+
+    );
+
+    int pointCount = maxPoints;
+
+    // AddPoint
+
+    //if ( iMouse.z > 0.0 ){
+
+    //    if (maxPoints > pointCount){
+    //        vec2 iMouseUV = toUV(iMouse.xy);
+    //        points[pointCount] = iMouseUV;
+    //        pointCount += 1;
+    //    }
+
+    //}
+
+    // Background Color
+
+    vec3 color = vec3(1.0);
+    //vec3 color = 0.5 + 0.5*cos(5.5+uv.xyx+vec3(0,2,4));
+
+    // Estimate Density
+    float blueKernelDensity = kde(uv, bluePoints, pointCount, 0.32+0.20*sin(iTime/4.0 + 15.0));
+    float redKernelDensity = kde(uv, redPoints, pointCount, 0.32+0.20*sin(iTime/4.0 + 15.0));
+
+    // Visualize Density
+    color = mix(blueColor, color, (1.0-blueKernelDensity)/1.4);
+    color = mix(redColor, color, (1.0-redKernelDensity)/1.4);
+
+    int numberOfLevelSets = 5;
+
+    for (int i = 0; i < numberOfLevelSets; i++){
+        color = drawIsoLine(blueKernelDensity+redKernelDensity / 2.0, (float(i)+1.0)*1.0/float(numberOfLevelSets), 0.02, vec3(1.0), color);
+    }
+
+    // Draw Points
+
+    for (int i = 0; i < pointCount; i++){
+        float dc = dcircle(uv, bluePoints[i], 0.02);
+        color = drawFill(dc, 0.01, blueColor - 0.2, color);
+    }
+
+    for (int i = 0; i < pointCount; i++){
+        float dc = dcircle(uv, redPoints[i], 0.02);
+        color = drawFill(dc, 0.01, redColor - 0.2, color);
+    }
+
+    // Output to screen
+    fragColor = vec4(color,1.0);
+}
