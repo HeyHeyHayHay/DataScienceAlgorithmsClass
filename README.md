@@ -4,22 +4,19 @@ This repository contains implementations of various data science algorithms base
 
 ## Current Implementations:
 
-<<<<<<< HEAD
 This repository currently includes implementations of the **K-Means Clustering** algorithm and the **Kernel Density Estimation** (KDE) algorithm.
 
 ###K-Means Clustering
 
 I wrote a K-Means clustering algorithm in Python to simplify an image by reducing it to a set of k dominant colors. Below are some examples:
-=======
-I used K-Means clustering algorithm to classifiy animal taxon and simplify an image by reducing it to a set of k dominant colors. I also implemented silhouette maximization.
-Below are some examples of color clustering:
->>>>>>> f6a62fbf4b60170cb23fe698f2babccdb4319fb1
 
 ![alt text](https://github.com/HeyHeyHayHay/DataScienceAlgorithmsClass/blob/main/kMeans/images/imageColorClusteringExamples.png?raw=true)
 
+I also used K-Means clustering algorithm to classify animal taxon.
+
 ###Kernel Density Estimation
 
-I implementated a **Kernel Density Estimation** (KDE) algorithm for various kernels in OpenGL Shading Language on ShaderToy. Using KDE, I created a generative artwork:
+I implemented a **Kernel Density Estimation** (KDE) algorithm for various kernels in OpenGL Shading Language on ShaderToy. Using KDE, I created a generative artwork:
 
 ![alt text](https://github.com/HeyHeyHayHay/DataScienceAlgorithmsClass/blob/main/KernelDensityEstimation/images/ShaderArtUsingKDE.png?raw=true)
 
