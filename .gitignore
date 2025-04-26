@@ -1,3 +1,6 @@
+
+# K Means
+
 kMeans/__pycache__/
 
 kMeans/images/
@@ -5,7 +8,7 @@ kMeans/images/
 
 kMeans/datasets/
 
-
-KernelDensityEstimation/images/
-!KernelDensityEstimation/images/RedBlueKDEShader.png
-!KernelDensityEstimation/images/ShaderArtUsingKDE.png
+# KDE
+#KernelDensityEstimation/images/
+#!KernelDensityEstimation/images/RedBlueKDEShader.png
+#!KernelDensityEstimation/images/ShaderArtUsingKDE.png
